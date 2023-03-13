@@ -18,3 +18,14 @@ Cons:We can use more hardware for higher performance instead of hiring coder to 
 **Fault Tolerence**:there are always some problems somewhere in your distributed sys,big scale turns the problems from very rare events into constant problem, so the failure handling ability is really needy.
 1. **Avalability**:some well designed sys can continue to work even if some **certain** kind of error happen.*eg: using replicas,if one failed,use another one*
 2. **Recoverability**:if something goes wrong maybe the servers will stop working and wait for someone to repair,after which can work like nothing bad gone wrong
+Most important tools for **Recoverability**
+1. Non-volatile-storage,
+2. Replication,but how too manage lots of replicas is tricky.
+
+**Consistency**
+Because of the replication, we may have different versions of the stored content
+**Strong Consistency**:always get what latestly put
+**Weak Consistency**:always get the same thing
+Weak consistency is also important and widely-used cuz Srong Consistency always costs too much,mainly about corespondance.
+
+**Map Reduce**(See paper)
