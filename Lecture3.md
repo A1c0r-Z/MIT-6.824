@@ -5,7 +5,7 @@ Constructing a distributed system is mainly about constructing a distributed str
 Performance -> Shading -> Fault Tolerace -> Replication -> Inconsistency -> Low Performace
 
 For a ideal Strong Consistent model, we want it to perform like one single server which has only one data and do only one thing at a time.As for a storage sys, answering request means modifying the stored data.To make the service predictable, we define a rule: answering to one request at a time, so that every request can see the latestly modified data.\
-*eg:c1 make the X be 1,at the same time,c2 make the X be 2,so what we get when we read X?*\
+*eg:c1 make the X be 1,at the same time,c2 make the X be 2,so what we get when we read X?*
 
 What's more, when we have several replicas, this problem could be harder.\
 Here is a bad design for multi-replica-sys:\
