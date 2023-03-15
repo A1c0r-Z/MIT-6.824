@@ -50,10 +50,10 @@ The application has a file in minds and an offset in the file that it wants to r
 **Write**\
 Client ask master look to add the end of this file
 * If No Primary:\
-  1.master find up-to-date replica,(up-to-date means the version of the replica is equal to the version number the master knows is the newest number.we can't just find the maxium version number cuz some chunkservers may be offline but keep the newest replica)
-  2.pick one to be primary, others to be secondary.
-  3.increments the version number and write that to disk.
-  4.tells chunkservers who are primary or secondary,and the new version number,all are written to the disk of chunkservers
+  1. master find up-to-date replica,(up-to-date means the version of the replica is equal to the version number the master knows is the newest number.we can't just find the maxium version number cuz some chunkservers may be offline but keep the newest replica)
+  2. pick one to be primary, others to be secondary.
+  3. increments the version number and write that to disk.
+  4. tells chunkservers who are primary or secondary,and the new version number,all are written to the disk of chunkservers
 
 
 
