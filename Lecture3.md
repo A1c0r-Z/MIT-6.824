@@ -57,7 +57,11 @@ Client ask master look to add the end of this file
   5. master writes the version number to disk(not certain about if this preceded 4)
 * Now there are Primary:
   1. primary picks a offset ,all the replicas are told to write the new appended record at the offset.
-  2. if all of the replicas saying yes about writing then the primary is going to reply success to the client.if the primary didn't get one of the secondaries saying yes,then primary reply no to client.(even though we fail but some chunkserver did actually append,this is how GFS work)In this case,client will reissue the append,and the append will eventually succeed,and the appended stuff will at a offset farther on file for each chunkserver.
+  2. if all of the replicas saying yes about writing then the primary is going to reply success to the client.if the primary didn't get one of the secondaries saying yes,then primary reply no to client.(even though we fail but some chunkserver did actually append,this is how GFS work)In this case,client may reissue the append,and the append will eventually succeed,and the appended stuff will at a offset farther on file for each chunkserver.
+ 
+*Split Brain:network partition that master can't talk to primary but primary can talk to client*
+The way that master achieves to rule out the prossibility of mistakingly designating two primary for the same chunk is when it designates a primary is says it gives the primary a lease which is basically the right to be primary untill a certain time, the master and primary know how long the lease last.If the lease expires the primary knows it expires and will simply stop executing client request.Therefore if master can't talk to primary,it will designate a new primary after the lease expires.
+
 
 
 
