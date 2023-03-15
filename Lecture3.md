@@ -24,7 +24,7 @@ It was tailored in a number of ways only for **big sequential file** read and wr
 The paper proposed a fairly heretical view that it was okay for store system to have a **weak consistency** to obtain a better performance.
 
 **Architecture**\
-A GFS cluster consists of a single *master* and multple *chuckservers*.\
+~A GFS cluster consists of a single *master* and multple *chuckservers*.\
 Files are divieded into fixed-size *chunks*.Each chunk is identified by an immutable and globally unique 64 bit *chunk handle* assigned by the master at the time of chunk creation.Chunkservers store chunks on local disks as Linux files and read or write chunk data specified by a chunk handle and byte range.For reliability,each chunk is replicated on multiple chunkservers,default is 3.\
 The master maintains all file system metadata,which includes the namespace,access control information,the mapping from files to chunks,and the current locations of chunks.It also controls system-wide activities such as chunk lease management, garbage collection of orphaned chunks, and chunk migration between chunkservers.The master periodically communicates with each chunkserver in HeartBeat messages to give it instructions and collect its state.
 
