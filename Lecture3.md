@@ -52,9 +52,12 @@ Client ask master look to add the end of this file
 * If No Primary:\
   1. master find up-to-date replica,(up-to-date means the version of the replica is equal to the version number the master knows is the newest number.we can't just find the maxium version number cuz some chunkservers may be offline but keep the newest replica)
   2. pick one to be primary, others to be secondary.
-  3. increments the version number and write that to disk.
-  4. tells chunkservers who are primary or secondary,and the new version number,all are written to the disk of chunkservers
-
+  3. increments the version number.
+  4. tells chunkservers who are primary or secondary,and the new version number,all are written to the disk of chunkservers, and lease
+  5. master writes the version number to disk(not certain about if this preceded 4)
+* Now there are Primary:\
+  1. primary picks a offset ,all the replicas are told to write the new appended record at the offset.
+  2. if all of the replicas saying yes about writing then the primary is going to reply success to the client.if the primary didn't get one of the secondaries saying yes,then primary reply no to client.(even though we fail but some chunkserver did actually append,this is how GFS work)
 
 
 
