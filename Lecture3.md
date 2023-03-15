@@ -39,3 +39,21 @@ It's got 2 main tables we care
 This stuff so far it's all in RAM,and just be gone if the master crashed.So in order to reboot the mater and not forget everything about the file sys,the master actually stores all of this data on disk as well as in memory.So reads are from memory but writes,above data reflected on this writes have to go to the disk.\
 And the way to actually manage that is the master has a log on disk and everytime it changes the data it appends an entry to the log on disk and checkpoint.And some data above needn't to be on disk like the lisk of chunkservers(master will talk to each chunkservers after reboot),information about primary.\
 However if the master crashes and has to reconstructed its state you wouldn't want to have to reread its log file back starting from beginning of the time when the server is installed maybe a few years ago,so the master sometime checkpoints its complete state to disk which takes some amount of seconds of a minute.And then it only need to plays just the portion of a log that starting at the checkpoint.
+
+**Steps of Read and Write**\
+**Read**\
+The application has a file in minds and an offset in the file that it wants to read some data from,so it sends the file name and the offset to the master,and the master looks the filename and use the offset diveded by 64 megabytes to find that chunck,in its chunktable finds the list of chunkservers have replicas of the data returns the client.
+1. client sends file name and the offset to the master 
+2. master sends the chunk handle *H* and the list of servers,which are cached by client for probable repeated read.
+3. the talk to one of the chunkservers,tells the chunk handle and offset.Chunkserver find the desired chunk and range of bytes and return it to client
+
+
+
+
+
+
+
+
+
+
+
