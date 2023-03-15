@@ -46,6 +46,7 @@ The application has a file in minds and an offset in the file that it wants to r
 1. client sends file name and the offset to the master 
 2. master sends the chunk handle *H* and the list of servers,which are cached by client for probable repeated read.
 3. the talk to one of the chunkservers,tells the chunk handle and offset.Chunkserver find the desired chunk and range of bytes and return it to client
+
 **Write**\
 Client ask master look to add the end of this file
 * If No Primary:\
