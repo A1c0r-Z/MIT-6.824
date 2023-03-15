@@ -46,8 +46,13 @@ The application has a file in minds and an offset in the file that it wants to r
 1. client sends file name and the offset to the master 
 2. master sends the chunk handle *H* and the list of servers,which are cached by client for probable repeated read.
 3. the talk to one of the chunkservers,tells the chunk handle and offset.Chunkserver find the desired chunk and range of bytes and return it to client
-
-
+**Write**\
+Client ask master look to add the end of this file
+* If No Primary:\
+  1.master find up-to-date replica,(up-to-date means the version of the replica is equal to the version number the master knows is the newest number.we can't just find the maxium version number cuz some chunkservers may be offline but keep the newest replica)
+  2.pick one to be primary, others to be secondary.
+  3.increments the version number and write that to disk.
+  4.tells chunkservers who are primary or secondary,and the new version number,all are written to the disk of chunkservers
 
 
 
