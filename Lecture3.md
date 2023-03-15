@@ -32,5 +32,8 @@ Although this problem is solvable, but more corespondance will be needed and com
 It's got 2 main tables we care
 1. one table that maps file name to an array of chunk IDs(or chunk handle)
 2. second table that maps each chunk handles to a bunch of data about that chunk
-   1. a
-   2. a
+   1. the list of chunkservers that hold the replicas of the data
+   2. the version number for each chunk
+   3. which chunkserver is the primary and also the expiration of time of the lease(about primary),cuz all writes to a chunk have to be sequence of the chunks primary.
+This stuff so far it's all in RAM,and just be gone if the master crashed.So in order to reboot the mater and not forget everything about the file sys,the master actually stores all of this data on disk as well as in memory.So reads are from memory but writes,above data reflected on this writes have to go to the disk.\
+And the way to actually manage that is the master has a log on disk and everytime it changes the data it appends an entry to the log on disk and checkpoint.And some data above needn't to be on disk like the lisk of chunkservers(master will talk to each chunkservers after reboot),information about primary.
