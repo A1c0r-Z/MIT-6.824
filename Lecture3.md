@@ -28,7 +28,7 @@ Although this problem is solvable, but more corespondance will be needed and com
 * Files are divieded into fixed-size *chunks*.Each chunk is identified by an immutable and globally unique 64 bit *chunk handle* assigned by the master at the time of chunk creation.Chunkservers store chunks on local disks as Linux files and read or write chunk data specified by a chunk handle and byte range.For reliability,each chunk is replicated on multiple chunkservers,default is 3.
 * The master maintains all file system metadata,which includes the namespace,access control information,the mapping from files to chunks,and the current locations of chunks.It also controls system-wide activities such as chunk lease management, garbage collection of orphaned chunks, and chunk migration between chunkservers.The master periodically communicates with each chunkserver in HeartBeat messages to give it instructions and collect its state.
 
-**Master Data**
+**Master Data**\
 It's got 2 main tables we care
 1. one table that maps file name to an array of chunk IDs(or chunk handle)
 2. second table that maps each chunk handles to a bunch of data about that chunk
