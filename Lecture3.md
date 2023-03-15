@@ -13,18 +13,18 @@ There are 2 servers both containing a replica for all data.They store a key-valu
 Although this problem is solvable, but more corespondance will be needed and complexity will be increased.There is a whole range of solutions to obtain acceptable consistency with some acceptable errors.
 
 **Goal of GFS**\
-GFS do lots to fix the above problem.\
-What they were looking for one goal is **Big** and **Fast**.\
-They also wanted a file sys that was sort of **global** in the sense that many diff app could get a it.\
-In order to get bigness and fastness they need to **split** the data.Every file will be automatically splited and saved at many servers,which makes read and write faster and make it available to save big data.\
-Because we sere built on numerous servers we want **automatic recovery**.\
-GFS was designed to in a **single data center**.\
-GFS was disigned for **internal use**.\
-It was tailored in a number of ways only for **big sequential file** read and writes.\
-The paper proposed a fairly heretical view that it was okay for store system to have a **weak consistency** to obtain a better performance.
+* GFS do lots to fix the above problem.\
+* What they were looking for one goal is **Big** and **Fast**.\
+* They also wanted a file sys that was sort of **global** in the sense that many diff app could get a it.\
+* In order to get bigness and fastness they need to **split** the data.Every file will be automatically splited and saved at many servers,which makes read and write faster and make it available to save big data.\
+* Because we sere built on numerous servers we want **automatic recovery**.\
+* GFS was designed to in a **single data center**.\
+* GFS was disigned for **internal use**.\
+* It was tailored in a number of ways only for **big sequential file** read and writes.\
+* The paper proposed a fairly heretical view that it was okay for store system to have a **weak consistency** to obtain a better performance.
 
 **Architecture**\
-~A GFS cluster consists of a single *master* and multple *chuckservers*.\
-Files are divieded into fixed-size *chunks*.Each chunk is identified by an immutable and globally unique 64 bit *chunk handle* assigned by the master at the time of chunk creation.Chunkservers store chunks on local disks as Linux files and read or write chunk data specified by a chunk handle and byte range.For reliability,each chunk is replicated on multiple chunkservers,default is 3.\
-The master maintains all file system metadata,which includes the namespace,access control information,the mapping from files to chunks,and the current locations of chunks.It also controls system-wide activities such as chunk lease management, garbage collection of orphaned chunks, and chunk migration between chunkservers.The master periodically communicates with each chunkserver in HeartBeat messages to give it instructions and collect its state.
+* A GFS cluster consists of a single *master* and multple *chuckservers*.\
+* Files are divieded into fixed-size *chunks*.Each chunk is identified by an immutable and globally unique 64 bit *chunk handle* assigned by the master at the time of chunk creation.Chunkservers store chunks on local disks as Linux files and read or write chunk data specified by a chunk handle and byte range.For reliability,each chunk is replicated on multiple chunkservers,default is 3.\
+* The master maintains all file system metadata,which includes the namespace,access control information,the mapping from files to chunks,and the current locations of chunks.It also controls system-wide activities such as chunk lease management, garbage collection of orphaned chunks, and chunk migration between chunkservers.The master periodically communicates with each chunkserver in HeartBeat messages to give it instructions and collect its state.
 
