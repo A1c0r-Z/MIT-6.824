@@ -22,7 +22,8 @@ So if we want to build a replicated state machines,we got number of questions to
 4. There are anomalies when cut over and we need to cope with them,It's almost impossible to design a cut over system in which no anomalies are ever visble.
 5. We will need to create new replicas if one fails forever, by state transfer.
 
-
+**VMware FT**
+VMware is a virtual machine company selling virtual machine technology.
 
 
 
