@@ -8,6 +8,7 @@ the computer would simply stop executing.Like someone unplug your power cable or
 * But no bugs.
 * There is also some limits to replication too like we were really assuming that the primary and backup are independent.If they have correlated problem,replication can't help us.
 
+
 The beginning of the paper mentions a couple of different approaches of replications:
 1. state transfer:the primary sends a copy of its entire state that is for example the contents of its RAM to the backup.
 2. replicated state machines:they just send the external events like arriving input from outside world.we believe that if 2 computer see the same input in the same oreder at the same time,thy will be the same.
