@@ -25,8 +25,10 @@ The paper only deals with processors,and it's no clear to how to extend to a mul
 
 **VMware FT**\
 VMware is a virtual machine company selling virtual machine technology.
-What paper is about we got at least 2 physical machines running their virtual machine monitors which are exactly the same,assuming that there's network connecing these two machines,and in addition to this networkd,some sets of clients are sending request.Actually VMware didn't use local disk,but using disk server connected to network
+What paper is about we got at least 2 physical machines running their virtual machine monitors and os over it and app over os, which are exactly the same,assuming that there's network connecing these two machines,and in addition to this networkd,some sets of clients are sending request.Actually VMware didn't use local disk,but using disk server connected to network.
 
+Client sends a request to primary that generate an interrupt.And this interrupt acutally goes to virtual machine monitor in the first instance,vitual machine monitor sees a input for this replicated service and so it does 2 things,(1)stimulates a network packet arival interrupt into the primary guest operationg system,(2)send back out to the network a copy of that packet to the backup virtual machine monitor and backup does (1),process in the same way and stay synchronized.\
+Of course,the servie will reply to the client on the primary,service will generate a reply packet and send it on the NIC which virtual mahcine emulating,and virtual machine monitor will see the packet and will actually send the reply back out the network.Because backup running the same thing,so it also generates a reply packet which is sent to the emulated NIC,and vitual machine monitor will see it and drop the packet cuz it know this is backup.
 
 
 
