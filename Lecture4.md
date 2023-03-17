@@ -2,7 +2,7 @@
 The topic for fault tolerence provide high availability that is you want to build some server even have some hardware problem,we can still provide service.
 And the tool we use is replication.
 
-**So what kind of failure can replication deal with?**\
+**So what kind of failure can replication deal with?**
 * The easiest way to characterize the failure is fail stop failures of single computer.fail stop is a sort of generic term and fault tolrence is that if something goes wrong would say the computer,
 the computer would simply stop executing.Like someone unplug your power cable or your connection to network,fan on server break and cpu will be off.\
 * But no bugs.
