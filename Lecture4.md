@@ -36,7 +36,8 @@ As far as termiology goes, paper call this stream(from primary to backup) of inp
 **Non-Deteministic Events**
 We have been assuming that as long as the backup sees the packet from the client it'll execute identically to the primary and that's actually glossing oversome huge and important details.\
 So one problem is there are some things that are non-deterministic.\
-1. External Input.They just arrive whenever they arrive,they're not predictable.The only form of input and output in the system is network packets.
+1. External Input.They just arrive whenever they arrive,they're not predictable.The only form of input and output in the system is network packets which consists of for us is the data in the packet plus the interrupt signalling that the packet had arrived.So when the packet arrives, ordianarily the NIC DMA makes packet contests into memory and then raises an interrupt which the os feels.And the interrupt happens at some point in the instruction stream.Both of those have to look identical in the primary and backup or else some execution may diverge.So the real issue is when the interrupt occurs exactly, at which instruction the interrupts happen to occur and better be the same on primary and backup.So the key is the content of the packet and the timing of the interrupt.
+2. 
 
 
 
