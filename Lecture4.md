@@ -47,6 +47,14 @@ It's these events that go over the logging channel and so the format of a log en
 
 Eample:Assuming the hardware in this case emulated hardware virtual machine has a timer that ticks say a hundred times a second and causes interrupts to operating system.The timer on the physical machine ticks and delivers an interrupt to VMM on the primary, the VMM at appropiate montment stops the execution of the primary, writes down the instruction number that it was at since machine booted and then deliver sort of fakes simulates and interrupt into the guest operating system on the primary at that instruction number says you're emulating the timer, just ticks.Then primary virtual machine monitor sends the interrupt that instruction number to the bakcup.There's also a physical timer on backup but not giving them.Whend the log entry interrupt,the backup VMM will arrange the special CPU to cause the physical machine to interrupt at the same instruction number and then VMM gets control again from guest and then fakes the timer interrupt to the backup operating system.
 
+**Output Rule**
+What the output in this system means sending packets.\
+The real case may be little complicated then was said above.\
+Supposing that we were running a some sort of database server, and the client operation that our database server support is incremnt.So let's just say everthing is fine so far and both primary and backup have value 10 in memory.Some client send an increment request to primary.Suppose the primary does indeed generate the reply here back to the client but the primary crashes just after sending its reply to the client and much worse it turns out that the logging entry and channel got dropped also.So now the client receive 11 but backup still get 10.So now there's another increment and backup will increase the number cuz primary died,and the reply will still be 11.So this is a disaster.\
+The solution to this problem is ouput rule.\
+The idea is that the primary isn't allowed to generate any ouput untill the backup acknowledges that it has received all log records up to this point.\
+So the real sequence is that the input arrives and primary sends a log entry restrictfully before it sending the ouput.And the ouput won't be sent untill backup acknowledges that it got the packet(it don't need to really execute it before sending the acknowledgement.\
+The primary has to delay at this point waiting for the backup to say that it's up to date.This is a real performance thorn in the side of just about every replication scheme.
 
 
 
