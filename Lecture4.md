@@ -37,9 +37,15 @@ As far as termiology goes, paper call this stream(from primary to backup) of inp
 We have been assuming that as long as the backup sees the packet from the client it'll execute identically to the primary and that's actually glossing oversome huge and important details.\
 So one problem is there are some things that are non-deterministic.\
 1. External Input.They just arrive whenever they arrive,they're not predictable.The only form of input and output in the system is network packets which consists of for us is the data in the packet plus the interrupt signalling that the packet had arrived.So when the packet arrives, ordianarily the NIC DMA makes packet contests into memory and then raises an interrupt which the os feels.And the interrupt happens at some point in the instruction stream.Both of those have to look identical in the primary and backup or else some execution may diverge.So the real issue is when the interrupt occurs exactly, at which instruction the interrupts happen to occur and better be the same on primary and backup.So the key is the content of the packet and the timing of the interrupt.
-2. 
+2. Weird Instructions.There's a few intructions beahave differently on different conputers depending on something like there's maybe a rondom number generator.
+3. Multi-core Parrelism.
 
+It's these events that go over the logging channel and so the format of a log entry was't said,but "I" am guessing really three things in it.
+1. Instruction number.It means the the number of instructions since the Machine booted.
+2. Type.
+3. Data.For fake the same result of some intruction in backup.
 
+Eample:Assuming the hardware in this case emulated hardware virtual machine has a timer that ticks say a hundred times a second and causes interrupts to operating system.The timer on the physical machine ticks and delivers an interrupt to VMM on the primary, the VMM at appropiate montment stops the execution of the primary writes down the instruction number that it was at since machine boot and then deliver sort of fakes simulates and interrupt into the guest operating system on the primary at that instruction number says you're emulationg the timer just ticks.Then primary virtual machine monitor sends the interrupt that instruction number to the bakcup.There's also a physical timer on backup but not giving them.Whend the log entry interrupt,the backup VMM will arrange the special CPU to cause the physical machine to interrupt at the same instruction number and then VMM gets control again from guest and then fakes the timer interrupt to the backup operating system.
 
 
 
