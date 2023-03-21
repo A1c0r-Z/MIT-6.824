@@ -54,7 +54,8 @@ Supposing that we were running a some sort of database server, and the client op
 The solution to this problem is ouput rule.\
 The idea is that the primary isn't allowed to generate any ouput untill the backup acknowledges that it has received all log records up to this point.\
 So the real sequence is that the input arrives and primary sends a log entry restrictfully before it sending the ouput.And the ouput won't be sent untill backup acknowledges that it got the packet(it don't need to really execute it before sending the acknowledgement.\
-The primary has to delay at this point waiting for the backup to say that it's up to date.This is a real performance thorn in the side of just about every replication scheme.
+The primary has to delay at this point waiting for the backup to say that it's up to date.This is a real performance thorn in the side of just about every replication scheme.We can't get primary get too far ahead of the backup becasue if the primary fail,it will mean the backup lagging behind the application.\
+
 
 
 
