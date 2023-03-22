@@ -54,14 +54,19 @@ Supposing that we were running a some sort of database server, and the client op
 The solution to this problem is ouput rule.\
 The idea is that the primary isn't allowed to generate any ouput untill the backup acknowledges that it has received all log records up to this point.\
 So the real sequence is that the input arrives and primary sends a log entry restrictfully before it sending the ouput.And the ouput won't be sent untill backup acknowledges that it got the packet(it don't need to really execute it before sending the acknowledgement.\
-The primary has to delay at this point waiting for the backup to say that it's up to date.This is a real performance thorn in the side of just about every replication scheme.We can't get primary get too far ahead of the backup becasue if the primary fail,it will mean the backup lagging behind the application.\
+The primary has to delay at this point waiting for the backup to say that it's up to date.This is a real performance thorn in the side of just about every replication scheme.We can't get primary get too far ahead of the backup becasue if the primary fail,it will mean the backup lagging behind the application.
 
 **Duplicated Output**\
 One possibility is that the situation maybe the primary crashes after its output is released, so the client does receive the reply then the primary crashes, the backup input is still in the event buffer. When the backup goes alive backup has to consume all the log records lying around that has not been consumed to catch up to the primary otherwise, it won't take over the same state.So for the example, the backup will increase the number to eleven and reply to the client,so now the client get two reply,which is also anomalous.\
 But the good news is, almost certainly the client is talking to the service using TCP, when the backup takes over the backup since the state is identical to primary when it generates the TCP packet, it will generate the same TCP number as an original packet and the stack on the client will know that's a duplicate packet which will be discarded, and the user will never see the duplicate packet.
 
 **Test-and-Set Service**\
+Up to now, we have been assuming that the machines are fail-stop.\
+But another very common situation is if the 2 machines are still up and running and executing,but there is something funny happen in the netwrok that causes they can't talk to each other but can still talk to clients.So if this happen,the 2 machine will think the other one crash,and make itself go alive and diverge finally.\
+And the way the paper solve it is by apealing to an outside authority to make the decision about which of the primary and the backup is allowed to be live.It turns out the storage on some external disk server which happen to abort this test-and-set service.So if one want to go alive,it will send test and set requests to the server.So the second one will know there have been a primary,and will not go alive.
 
+One of like deep rules in mit6.824 is that you cannot tell whether the computer is dead or not, all you know is that you stopped receiving packets from it.
+And the test-and-set service is acutally single-point-of-failure,this is kinda disappointing.
 
 
 
