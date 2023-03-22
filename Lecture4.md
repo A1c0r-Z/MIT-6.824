@@ -47,7 +47,7 @@ It's these events that go over the logging channel and so the format of a log en
 
 Eample:Assuming the hardware in this case emulated hardware virtual machine has a timer that ticks say a hundred times a second and causes interrupts to operating system.The timer on the physical machine ticks and delivers an interrupt to VMM on the primary, the VMM at appropiate montment stops the execution of the primary, writes down the instruction number that it was at since machine booted and then deliver sort of fakes simulates and interrupt into the guest operating system on the primary at that instruction number says you're emulating the timer, just ticks.Then primary virtual machine monitor sends the interrupt that instruction number to the bakcup.There's also a physical timer on backup but not giving them.Whend the log entry interrupt,the backup VMM will arrange the special CPU to cause the physical machine to interrupt at the same instruction number and then VMM gets control again from guest and then fakes the timer interrupt to the backup operating system.
 
-**Output Rule**
+**Output Rule**\
 What the output in this system means sending packets.\
 The real case may be little complicated then was said above.\
 Supposing that we were running a some sort of database server, and the client operation that our database server support is incremnt.So let's just say everthing is fine so far and both primary and backup have value 10 in memory.Some client send an increment request to primary.Suppose the primary does indeed generate the reply here back to the client but the primary crashes just after sending its reply to the client and much worse it turns out that the logging entry and channel got dropped also.So now the client receive 11 but backup still get 10.So now there's another increment and backup will increase the number cuz primary died,and the reply will still be 11.So this is a disaster.\
@@ -56,7 +56,11 @@ The idea is that the primary isn't allowed to generate any ouput untill the back
 So the real sequence is that the input arrives and primary sends a log entry restrictfully before it sending the ouput.And the ouput won't be sent untill backup acknowledges that it got the packet(it don't need to really execute it before sending the acknowledgement.\
 The primary has to delay at this point waiting for the backup to say that it's up to date.This is a real performance thorn in the side of just about every replication scheme.We can't get primary get too far ahead of the backup becasue if the primary fail,it will mean the backup lagging behind the application.\
 
+**Duplicated Output**\
+One possibility is that the situation maybe the primary crashes after its output is released, so the client does receive the reply then the primary crashes, the backup input is still in the event buffer. When the backup goes alive backup has to consume all the log records lying around that has not been consumed to catch up to the primary otherwise, it won't take over the same state.So for the example, the backup will increase the number to eleven and reply to the client,so now the client get two reply,which is also anomalous.\
+But the good news is, almost certainly the client is talking to the service using TCP, when the backup takes over the backup since the state is identical to primary when it generates the TCP packet, it will generate the same TCP number as an original packet and the stack on the client will know that's a duplicate packet which will be discarded, and the user will never see the duplicate packet.
 
+**Test-and-Set Service**\
 
 
 
